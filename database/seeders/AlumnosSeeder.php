@@ -19,9 +19,9 @@ class AlumnosSeeder extends Seeder
         ]);
 
         $alumnos = [
-            ['Ana López', 'ana@correo.com', 2, 9.6],
-            ['Luis Pérez', 'luis@correo.com', 5, 7.5],
-            ['Marta Ruiz', 'marta@correo.com', 12, 5.0],
+            ['Mimi', 'Mimi@correo.com', 2, 9.6],
+            ['Evans', 'luis@correo.com', 5, 7.5],
+            ['Yahir', 'marta@correo.com', 12, 5.0],
         ];
 
         foreach ($alumnos as $a) {

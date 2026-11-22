@@ -48,7 +48,6 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Práctica 1.3: alumnos
     // Profesor y alumno entran al listado (el alumno solo ve lo suyo)
     Route::get('/alumnos', [AlumnoController::class, 'index'])
         ->middleware('rol:profesor,alumno')
