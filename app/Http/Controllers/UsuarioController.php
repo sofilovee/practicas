@@ -9,19 +9,19 @@ use Illuminate\Support\Facades\Hash;
 class UsuarioController extends Controller
 {
     public function index()
-    {
-        $usuarios = User::all();
+{
+    $usuarios = User::whereIn('role', ['admin', 'empleado'])->get();
 
-        // Solo el admin ve a los usuarios deshabilitados, el empleado no
-        $eliminados = null;
-        if (auth()->user()->role === 'admin') {
-            $eliminados = User::onlyTrashed()->get();
-        }
-
-        return view('usuarios.index', compact('usuarios', 'eliminados'));
+    // Solo el admin ve a los usuarios deshabilitados
+    $eliminados = null;
+    if (auth()->user()->role === 'admin') {
+        $eliminados = User::onlyTrashed()->whereIn('role', ['admin', 'empleado'])->get();
     }
 
-    public function create()
+    return view('usuarios.index', compact('usuarios', 'eliminados'));
+}
+
+    public function crear()
     {
         return view('usuarios.crear');
     }
@@ -51,13 +51,15 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('exito', 'Usuario registrado.');
     }
 
-    public function show(User $usuario)
+    public function mostrar(User $usuario)
     {
+         $this->soloDelSistema($usuario);
         return view('usuarios.mostrar', compact('usuario'));
     }
 
-    public function edit(User $usuario)
+    public function editar(User $usuario)
     {
+         $this->soloDelSistema($usuario);
         // un empleado no puede editar a un administrador
         if (auth()->user()->role !== 'admin' && $usuario->role === 'admin') {
             abort(403, 'No puedes editar a un administrador.');
@@ -68,6 +70,7 @@ class UsuarioController extends Controller
 
     public function update(Request $request, User $usuario)
     {
+         $this->soloDelSistema($usuario);
         if (auth()->user()->role !== 'admin' && $usuario->role === 'admin') {
             abort(403, 'No puedes editar a un administrador.');
         }
@@ -100,6 +103,7 @@ class UsuarioController extends Controller
     // aqui nada mas lo deshabilitamos a menos q seas tu miesmo
     public function destroy(User $usuario)
     {
+         $this->soloDelSistema($usuario);
         if ($usuario->id === auth()->id()) {
             return back()->withErrors(['error' => 'No puedes eliminar tu propio usuario.']);
         }
@@ -130,4 +134,12 @@ class UsuarioController extends Controller
 
         return redirect()->route('usuarios.index')->with('exito', 'Usuario restaurado.');
     }
+
+    // Este módulo solo trabaja con administradores y empleados
+private function soloDelSistema(User $usuario)
+{
+    if (!in_array($usuario->role, ['admin', 'empleado'])) {
+        abort(404);
+    }
+}
 }

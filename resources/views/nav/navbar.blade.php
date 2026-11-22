@@ -11,7 +11,7 @@
     @auth
         <nav class="navbar navbar-dark bg-dark mb-4">
             <div class="container">
-                <span class="navbar-brand">Practicas</span>
+                <a class="navbar-brand" href="{{ route('home') }}">Prácticas Laravel</a>
                 <div class="d-flex align-items-center">
                     <span class="text-white me-3">{{ auth()->user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">

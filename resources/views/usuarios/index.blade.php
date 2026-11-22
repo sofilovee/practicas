@@ -5,7 +5,7 @@
     <h4>Usuarios</h4>
     <div>
         <a href="{{ route('home') }}" class="btn btn-secondary">Volver al inicio</a>
-        <a href="{{ route('usuarios.create') }}" class="btn btn-primary">Nuevo usuario</a>
+        <a href="{{ route('usuarios.crear') }}" class="btn btn-primary">Nuevo usuario</a>
     </div>
 </div>
 
@@ -25,10 +25,10 @@
                 <td>{{ $usuario->email }}</td>
                 <td>{{ $usuario->role }}</td>
                 <td>
-                    <a href="{{ route('usuarios.show', $usuario) }}" class="btn btn-info btn-sm">Ver</a>
+                    <a href="{{ route('usuarios.mostrar', $usuario) }}" class="btn btn-info btn-sm">Ver</a>
 
                     @if (auth()->user()->role === 'admin' || $usuario->role !== 'admin')
-                        <a href="{{ route('usuarios.edit', $usuario) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{{ route('usuarios.editar', $usuario) }}" class="btn btn-warning btn-sm">Editar</a>
                     @endif
 
                     @if (auth()->user()->role === 'admin')

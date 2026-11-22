@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\AuthController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -24,19 +25,41 @@ Route::middleware('auth')->group(function () {
         return view('home');
     })->name('home');
 
+    Route::get('/autenticacion', function () {
+    return view('autenticacion');
+})->name('autenticacion');
+
     Route::post('/logout', [AuthController::class, 'cerrarSesion'])->name('logout');
 
-    Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
-    Route::get('/usuarios/crear', [UsuarioController::class, 'create'])->name('usuarios.create');
-    Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
-    Route::get('/usuarios/{usuario}', [UsuarioController::class, 'show'])->name('usuarios.show');
-    Route::get('/usuarios/{usuario}/editar', [UsuarioController::class, 'edit'])->name('usuarios.edit');
-    Route::put('/usuarios/{usuario}', [UsuarioController::class, 'update'])->name('usuarios.update');
+    // Práctica 1.2: usuarios (solo admin y empleado)
+    Route::middleware('rol:admin,empleado')->group(function () {
+        Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
+        Route::get('/usuarios/crear', [UsuarioController::class, 'crear'])->name('usuarios.crear');
+        Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
+        Route::get('/usuarios/{usuario}', [UsuarioController::class, 'mostrar'])->name('usuarios.mostrar');
+        Route::get('/usuarios/{usuario}/editar', [UsuarioController::class, 'editar'])->name('usuarios.editar');
+        Route::put('/usuarios/{usuario}', [UsuarioController::class, 'update'])->name('usuarios.update');
 
-    // Solo administrador
-    Route::middleware('admin')->group(function () {
-        Route::delete('/usuarios/{usuario}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
-        Route::delete('/usuarios/{id}/permanente', [UsuarioController::class, 'forceDelete'])->name('usuarios.forceDelete');
-        Route::patch('/usuarios/{id}/restaurar', [UsuarioController::class, 'restaurar'])->name('usuarios.restore');
+        // Solo administrador
+        Route::middleware('admin')->group(function () {
+            Route::delete('/usuarios/{usuario}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+            Route::delete('/usuarios/{id}/permanente', [UsuarioController::class, 'forceDelete'])->name('usuarios.forceDelete');
+            Route::patch('/usuarios/{id}/restaurar', [UsuarioController::class, 'restaurar'])->name('usuarios.restore');
+        });
+    });
+
+    // Práctica 1.3: alumnos
+    // Profesor y alumno entran al listado (el alumno solo ve lo suyo)
+    Route::get('/alumnos', [AlumnoController::class, 'index'])
+        ->middleware('rol:profesor,alumno')
+        ->name('alumnos.index');
+
+    // Solo profesor
+    Route::middleware('rol:profesor')->group(function () {
+        Route::get('/alumnos/crear', [AlumnoController::class, 'crear'])->name('alumnos.crear');
+        Route::post('/alumnos', [AlumnoController::class, 'store'])->name('alumnos.store');
+        Route::get('/alumnos/{alumno}/editar', [AlumnoController::class, 'editar'])->name('alumnos.editar');
+        Route::put('/alumnos/{alumno}', [AlumnoController::class, 'update'])->name('alumnos.update');
+        Route::delete('/alumnos/{alumno}', [AlumnoController::class, 'destroy'])->name('alumnos.destroy');
     });
 });
