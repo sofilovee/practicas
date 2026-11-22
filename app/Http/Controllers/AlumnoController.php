@@ -17,7 +17,6 @@ class AlumnoController extends Controller
             return view('alumnos.mio', compact('alumno'));
         }
 
-        // Criterios de orden permitidos (así nadie manda columnas raras por la URL)
         $columnas = [
             'nombre' => 'users.name',
             'calificacion' => 'alumnos.calificacion',

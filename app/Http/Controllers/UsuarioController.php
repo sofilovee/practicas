@@ -135,7 +135,7 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('exito', 'Usuario restaurado.');
     }
 
-    // Este módulo solo trabaja con administradores y empleados
+    // esto solo trabaja con administradores y empleados
 private function soloDelSistema(User $usuario)
 {
     if (!in_array($usuario->role, ['admin', 'empleado'])) {
