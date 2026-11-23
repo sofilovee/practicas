@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Practicas Kenneth</title>
     @vite(['resources/js/app.js'])
+
 </head>
 <body class="bg-light">
 

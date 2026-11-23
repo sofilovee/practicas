@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\ReservacionController;
+use App\Http\Controllers\PartidaController;
+use App\Http\Controllers\JugadorController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -14,6 +16,8 @@ Route::get('/', function () {
 
 Route::get('/login', [AuthController::class, 'mostrarLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'iniciarSesion'])->name('login.enviar');
+Route::get('/registro', [AuthController::class, 'mostrarRegistro'])->name('registro');
+Route::post('/registro', [AuthController::class, 'registrar'])->name('registro.enviar');
 
 Route::get('/verificacion', [AuthController::class, 'mostrarVerificacion'])
     ->name('verificacion.mostrar')
@@ -100,4 +104,35 @@ Route::middleware('auth')->group(function () {
         Route::put('/equipos/{equipo}', [EquipoController::class, 'update'])->name('equipos.update');
         Route::delete('/equipos/{equipo}', [EquipoController::class, 'destroy'])->name('equipos.destroy');
     });
+
+        // Practica 1.6: juego del gato
+    Route::middleware('rol:admin,jugador')->group(function () {
+        Route::get('/partidas', [PartidaController::class, 'index'])->name('partidas.index');
+        Route::get('/partidas/{partida}', [PartidaController::class, 'mostrar'])->name('partidas.mostrar');
+        Route::get('/partidas/{partida}/estado', [PartidaController::class, 'estado'])->name('partidas.estado');
+    });
+
+    // Solo jugador
+    Route::middleware('rol:jugador')->group(function () {
+        Route::post('/partidas', [PartidaController::class, 'crear'])->name('partidas.crear');
+        Route::post('/partidas/{partida}/unirse', [PartidaController::class, 'unirse'])->name('partidas.unirse');
+        Route::post('/partidas/{partida}/mover', [PartidaController::class, 'mover'])->name('partidas.mover');
+        Route::post('/partidas/{partida}/abandonar', [PartidaController::class, 'abandonar'])->name('partidas.abandonar');
+    });
+
+    // Solo administrador
+    Route::patch('/partidas/{partida}/cancelar', [PartidaController::class, 'cancelar'])
+        ->middleware('admin')
+        ->name('partidas.cancelar');
+
+            // Práctica 1.6: administración de jugadores (solo administrador)
+    Route::middleware('admin')->group(function () {
+        Route::get('/jugadores', [JugadorController::class, 'index'])->name('jugadores.index');
+        Route::get('/jugadores/crear', [JugadorController::class, 'crear'])->name('jugadores.crear');
+        Route::post('/jugadores', [JugadorController::class, 'store'])->name('jugadores.store');
+        Route::get('/jugadores/{jugador}/editar', [JugadorController::class, 'editar'])->name('jugadores.editar');
+        Route::put('/jugadores/{jugador}', [JugadorController::class, 'update'])->name('jugadores.update');
+        Route::delete('/jugadores/{jugador}', [JugadorController::class, 'destroy'])->name('jugadores.destroy');
+    });
+    
 });

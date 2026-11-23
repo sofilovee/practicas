@@ -81,7 +81,7 @@ class ReservacionController extends Controller
     private function revisarDueno(Reservacion $reservacion)
     {
         if (auth()->user()->role !== 'admin' && $reservacion->user_id !== auth()->id()) {
-            abort(403, 'Esa reservación no es tuya.');
+            abort(403, 'Esa reservacion no es tuya.');
         }
     }
 }

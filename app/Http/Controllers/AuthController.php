@@ -109,4 +109,31 @@ class AuthController extends Controller
 
         return redirect()->route('login');
     }
+
+    public function mostrarRegistro()
+{
+    return view('registro');
+}
+
+public function registrar(Request $request)
+{
+    $datos = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:8|confirmed',
+    ]);
+
+    // el jugador s registra aqui
+    $usuario = User::create([
+        'name' => $datos['name'],
+        'email' => $datos['email'],
+        'password' => Hash::make($datos['password']),
+        'role' => 'jugador',
+    ]);
+
+    Auth::login($usuario);
+    $request->session()->regenerate();
+
+    return redirect()->route('home');
+}
 }

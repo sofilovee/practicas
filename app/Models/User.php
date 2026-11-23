@@ -41,8 +41,13 @@ class User extends Authenticatable
     }
 
     public function reservaciones()
-{
-    return $this->hasMany(Reservacion::class);
-}
+    {
+        return $this->hasMany(Reservacion::class);
+    }
+
+    public function partidas()
+    {
+        return Partida::where('jugador_x_id', $this->id)->orWhere('jugador_o_id', $this->id);
+    }
    
 }

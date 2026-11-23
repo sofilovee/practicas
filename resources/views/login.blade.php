@@ -19,6 +19,7 @@
                     </div>
                     <button class="btn btn-primary w-100">Entrar</button>
                 </form>
+                <p class="mt-3 mb-0">¿Quieres jugar? <a href="{{ route('registro') }}">Regístrate como jugador</a></p>
             </div>
         </div>
     </div>
