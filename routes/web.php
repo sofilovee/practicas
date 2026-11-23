@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\EquipoController;
+use App\Http\Controllers\ReservacionController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -75,5 +77,27 @@ Route::middleware('auth')->group(function () {
         Route::get('/alumnos/{alumno}/editar', [AlumnoController::class, 'editar'])->name('alumnos.editar');
         Route::put('/alumnos/{alumno}', [AlumnoController::class, 'update'])->name('alumnos.update');
         Route::delete('/alumnos/{alumno}', [AlumnoController::class, 'destroy'])->name('alumnos.destroy');
+    });
+
+        // Práctica 1.5: reservación de equipos
+    Route::middleware('rol:admin,estudiante')->group(function () {
+        Route::get('/equipos', [EquipoController::class, 'index'])->name('equipos.index');
+        Route::get('/reservaciones', [ReservacionController::class, 'index'])->name('reservaciones.index');
+        Route::get('/reservaciones/{reservacion}', [ReservacionController::class, 'mostrar'])->name('reservaciones.mostrar');
+        Route::patch('/reservaciones/{reservacion}/cancelar', [ReservacionController::class, 'cancelar'])->name('reservaciones.cancelar');
+    });
+
+    // Solo estudiante
+    Route::post('/equipos/{equipo}/reservar', [ReservacionController::class, 'reservar'])
+        ->middleware('rol:estudiante')
+        ->name('equipos.reservar');
+
+    // Solo administrador
+    Route::middleware('admin')->group(function () {
+        Route::get('/equipos/crear', [EquipoController::class, 'crear'])->name('equipos.crear');
+        Route::post('/equipos', [EquipoController::class, 'store'])->name('equipos.store');
+        Route::get('/equipos/{equipo}/editar', [EquipoController::class, 'editar'])->name('equipos.editar');
+        Route::put('/equipos/{equipo}', [EquipoController::class, 'update'])->name('equipos.update');
+        Route::delete('/equipos/{equipo}', [EquipoController::class, 'destroy'])->name('equipos.destroy');
     });
 });
