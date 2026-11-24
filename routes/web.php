@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
     });
 
-    // Práctica 1.2: usuarios (solo admin y empleado)
+    // Practica 1.2: usuarios (solo admin y empleado)
     Route::middleware('rol:admin,empleado')->group(function () {
         Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
         Route::get('/usuarios/crear', [UsuarioController::class, 'crear'])->name('usuarios.crear');
@@ -83,7 +83,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/alumnos/{alumno}', [AlumnoController::class, 'destroy'])->name('alumnos.destroy');
     });
 
-        // Práctica 1.5: reservación de equipos
+        // Practica 1.5: reservacion de equipos
     Route::middleware('rol:admin,estudiante')->group(function () {
         Route::get('/equipos', [EquipoController::class, 'index'])->name('equipos.index');
         Route::get('/reservaciones', [ReservacionController::class, 'index'])->name('reservaciones.index');
@@ -125,7 +125,7 @@ Route::middleware('auth')->group(function () {
         ->middleware('admin')
         ->name('partidas.cancelar');
 
-            // Práctica 1.6: administración de jugadores (solo administrador)
+    //  administracion de jugadores
     Route::middleware('admin')->group(function () {
         Route::get('/jugadores', [JugadorController::class, 'index'])->name('jugadores.index');
         Route::get('/jugadores/crear', [JugadorController::class, 'crear'])->name('jugadores.crear');

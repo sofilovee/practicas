@@ -10,7 +10,7 @@ class ReservacionController extends Controller
 {
     public function index()
     {
-        // El admin ve todas; el estudiante solo las suyas
+        // el admin ve todas, el estudiante solo las suyas
         if (auth()->user()->role === 'admin') {
             $reservaciones = Reservacion::with(['user', 'equipo'])->orderByDesc('created_at')->get();
         } else {
@@ -55,7 +55,7 @@ class ReservacionController extends Controller
 
         if (!$reservado) {
             return redirect()->route('equipos.index')
-                ->withErrors(['equipo' => 'Ese equipo ya no está disponible.']);
+                ->withErrors(['equipo' => 'Ese equipo ya no esta disponible.']);
         }
 
         return redirect()->route('reservaciones.index')->with('exito', 'Equipo reservado.');
@@ -66,7 +66,7 @@ class ReservacionController extends Controller
         $this->revisarDueno($reservacion);
 
         if ($reservacion->estado !== 'activa') {
-            return back()->withErrors(['error' => 'Esa reservación ya estaba cancelada.']);
+            return back()->withErrors(['error' => 'Esa reservacion ya estaba cancelada.']);
         }
 
         DB::transaction(function () use ($reservacion) {
@@ -74,7 +74,7 @@ class ReservacionController extends Controller
             $reservacion->equipo->update(['estado' => 'disponible']);
         });
 
-        return redirect()->route('reservaciones.index')->with('exito', 'Reservación cancelada.');
+        return redirect()->route('reservaciones.index')->with('exito', 'Reservacion cancelada.');
     }
 
     // un estudiante solo puede tocar y ver sus propias reservaciones

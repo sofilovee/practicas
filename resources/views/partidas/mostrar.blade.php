@@ -1,39 +1,7 @@
 @extends('Nav.navbar')
 
 @section('contenido')
-<style>
-    .alert.aviso-morado {
-        background-color: #ede0f9;
-        color: #5a189a;
-        border-color: #d6b8f0;
-    }
 
-    .alert.aviso-rosa {
-        background-color: #fde4f2;
-        color: #a3246f;
-        border-color: #f7c1e0;
-    }
-
-    .btn.btn-morado {
-        background-color: #7b2cbf;
-        border-color: #7b2cbf;
-        color: #fff;
-    }
-    .btn.btn-morado:hover {
-        background-color: #5a189a;
-        border-color: #5a189a;
-    }
-
-    .btn.btn-rosa {
-        background-color: #e754a8;
-        border-color: #e754a8;
-        color: #fff;
-    }
-    .btn.btn-rosa:hover {
-        background-color: #c93d8f;
-        border-color: #c93d8f;
-    }
-</style>
 @php
     $tablero = $partida->tablero();
     $miSimbolo = $partida->simboloDe(auth()->id());
@@ -55,7 +23,7 @@
                     <p>Tú juegas con: <strong>{{ $miSimbolo }}</strong></p>
                 @endif
 
-                {{-- Mensaje según el estado de la partida --}}
+                {{-- Mensaje segun el estado de la partida --}}
                 @if ($partida->estado === 'esperando')
                     <div class="alert alert-info">Esperando a que otro jugador se una.</div>
                 @elseif ($partida->estado === 'en_curso')

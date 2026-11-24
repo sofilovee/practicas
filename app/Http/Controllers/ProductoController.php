@@ -11,7 +11,7 @@ class ProductoController extends Controller
 {
     public function index(Request $request)
     {
-        // Criterios de orden permitidos
+        // criterios de orden permitidos
         $ordenes = [
             'nombre_asc' => ['nombre', 'asc'],
             'nombre_desc' => ['nombre', 'desc'],
@@ -60,7 +60,6 @@ class ProductoController extends Controller
         $productos = $consulta->paginate($porPagina)->withQueryString();
 
         $categorias = Categoria::orderBy('nombre')->get();
-
         return view('productos.index', compact('productos', 'categorias', 'orden', 'porPagina'));
     }
 

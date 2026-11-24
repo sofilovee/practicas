@@ -19,7 +19,7 @@ return new class extends Migration
         $table->string('simbolo', 1);
         $table->timestamps();
 
-        // Una casilla solo puede ocuparse una vez por partida
+        // una casilla solo puede ocuparse una vez por partida
         $table->unique(['partida_id', 'posicion']);
     });
 }

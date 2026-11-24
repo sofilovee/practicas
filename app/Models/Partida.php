@@ -35,7 +35,7 @@ class Partida extends Model
         return $this->hasMany(Movimiento::class);
     }
 
-    // El tablero se arma con los movimientos: un arreglo de 9 casillas
+    // el tablero se arma con los movimientos: un arreglo de 9 casillas
     public function tablero()
     {
         $tablero = array_fill(0, 9, null);

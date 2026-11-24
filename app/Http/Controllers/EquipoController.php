@@ -9,7 +9,7 @@ class EquipoController extends Controller
 {
     public function index()
     {
-        // El admin ve todos; el estudiante solo los disponibles
+        // el admin ve todo, el estudiante solo los disponibles
         if (auth()->user()->role === 'admin') {
             $equipos = Equipo::orderBy('nombre')->get();
         } else {

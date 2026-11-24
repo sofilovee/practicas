@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 
 class ProductoRequest extends FormRequest
 {
-    // La autorización se hace con el middleware de las rutas
+    // laa autorizacion se hace con el middleware de las rutas
     public function authorize(): bool
     {
         return true;
@@ -16,7 +16,7 @@ class ProductoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // Al editar, el nombre puede ser el mismo del producto actual
+            // al editar, el nombre puede ser el mismo del producto actual
             'nombre' => [
                 'required',
                 'string',

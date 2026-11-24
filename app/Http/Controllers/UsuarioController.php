@@ -12,7 +12,7 @@ class UsuarioController extends Controller
 {
     $usuarios = User::whereIn('role', ['admin', 'empleado'])->get();
 
-    // Solo el admin ve a los usuarios deshabilitados
+    // solo el admin ve a los usuarios deshabilitados
     $eliminados = null;
     if (auth()->user()->role === 'admin') {
         $eliminados = User::onlyTrashed()->whereIn('role', ['admin', 'empleado'])->get();
@@ -85,7 +85,7 @@ class UsuarioController extends Controller
         $usuario->name = $datos['name'];
         $usuario->email = $datos['email'];
 
-        // Si no escribe contraseña, se queda la que ya tenia
+        // si no escribe contraseña, se queda la que ya tenia
         if (!empty($datos['password'])) {
             $usuario->password = Hash::make($datos['password']);
         }

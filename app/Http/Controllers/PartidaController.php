@@ -134,13 +134,13 @@ class PartidaController extends Controller
                 return 'No eres jugador de esta partida.';
             }
             if ($p->estado !== 'en_curso') {
-                return 'La partida no está en curso.';
+                return 'La partida no esta en curso.';
             }
             if ($p->turno !== $simbolo) {
                 return 'No es tu turno.';
             }
             if ($p->movimientos()->where('posicion', $posicion)->exists()) {
-                return 'Esa casilla ya está ocupada.';
+                return 'Esa casilla ya esta ocupada.';
             }
 
             Movimiento::create([
@@ -189,10 +189,10 @@ class PartidaController extends Controller
             $simbolo = $p->simboloDe(auth()->id());
 
             if ($p->estado === 'esperando' && $simbolo === 'X') {
-                // Nadie se había unido: la partida simplemente se cancela
+                // nadie se habia unido: la partida simplemente se cancela
                 $p->update(['estado' => 'cancelada', 'resultado' => 'cancelada']);
             } elseif ($p->estado === 'en_curso' && $simbolo !== null) {
-                // Si abandonas una partida en curso, gana el otro jugador
+                // si abandonas una partida en curso, gana el otro jugador
                 $ganadorId = $simbolo === 'X' ? $p->jugador_o_id : $p->jugador_x_id;
                 $p->update([
                     'estado' => 'terminada',
@@ -215,7 +215,7 @@ class PartidaController extends Controller
         return redirect()->route('partidas.index')->with('exito', 'Partida cancelada.');
     }
 
-    // Solo los dos jugadores de la partida (y el admin) pueden verla
+    // solo los dos jugadores de la partida y el admin pueden verla
     private function revisarParticipante(Partida $partida)
     {
         $esAdmin = auth()->user()->role === 'admin';
@@ -225,7 +225,7 @@ class PartidaController extends Controller
         }
     }
 
-    // revisa las 8 lineas posibles; devuelve 'X', 'O' o null
+    // revisa las 8 lineas posibles, devuelve 'X', 'O' o null
     private function buscarGanador($tablero)
     {
         $lineas = [
